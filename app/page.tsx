@@ -1,75 +1,15 @@
-import { CategoriesData, CurrentAssessment, DomainId } from '@/lib/types';
-import OverallScore from '@/components/OverallScore';
-import DomainSection from '@/components/DomainSection';
+import { CategoriesData, CurrentAssessment, StatesData } from '@/lib/types';
+import Dashboard from '@/components/Dashboard';
 import categoriesData from '@/data/categories.json';
 import currentData from '@/data/current.json';
+import statesData from '@/data/states.json';
 
-export default function Dashboard() {
-  const { categories } = categoriesData as CategoriesData;
-  const current = currentData as CurrentAssessment;
-
-  const domains: DomainId[] = ['rule-of-law', 'operating-economic', 'societal-institutional'];
-
+export default function Home() {
   return (
-    <div className="space-y-8">
-      {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold text-navy dark:text-cream">
-          US Political Risk Assessment
-        </h1>
-        <p className="mt-2 text-navy/70 dark:text-cream/70">
-          Tracking democratic health across 10 key indicators
-        </p>
-      </div>
-
-      {/* Overall Score Card */}
-      <OverallScore
-        score={current.overallScore}
-        riskLevel={current.riskLevel}
-        assessmentDate={current.assessmentDate}
-        assessmentPeriod={current.assessmentPeriod}
-      />
-
-      {/* Domain Sections */}
-      <div className="space-y-8">
-        {domains.map((domainId) => (
-          <DomainSection
-            key={domainId}
-            domainId={domainId}
-            categories={categories}
-            scores={current.scores}
-            domainScore={current.domainScores[domainId]}
-          />
-        ))}
-      </div>
-
-      {/* About Section */}
-      <div className="bg-white dark:bg-navy-600 rounded-lg p-6 shadow-ln-light border border-navy/10">
-        <h2 className="text-lg font-semibold text-navy dark:text-cream mb-4">
-          About This Assessment
-        </h2>
-        <div className="prose prose-sm max-w-none">
-          <p className="text-navy/80 dark:text-cream/80">
-            The US Political Risk Framework evaluates 10 categories across three domains to provide
-            a comprehensive assessment of democratic health and institutional integrity. Each
-            category is scored on a 1-10 scale, with detailed rubrics guiding the assessment.
-          </p>
-          <ul className="mt-4 space-y-2 text-navy/80 dark:text-cream/80">
-            <li>
-              <strong className="text-navy dark:text-cream">Rule of Law & National Security:</strong> Elections, judicial independence,
-              and security apparatus integrity
-            </li>
-            <li>
-              <strong className="text-navy dark:text-cream">Operating & Economic Environment:</strong> Regulatory stability, trade policy,
-              government contracts, and fiscal policy
-            </li>
-            <li>
-              <strong className="text-navy dark:text-cream">Societal & Institutional Integrity:</strong> Media freedom, civil discourse,
-              and institutional independence
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
+    <Dashboard
+      categoriesData={categoriesData as CategoriesData}
+      currentData={currentData as CurrentAssessment}
+      statesData={statesData as StatesData}
+    />
   );
 }

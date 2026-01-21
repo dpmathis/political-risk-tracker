@@ -85,3 +85,17 @@ export interface DomainInfo {
   name: string;
   categories: string[];
 }
+
+// State-level risk data
+export interface StateRiskData {
+  stateCode: string;
+  stateName: string;
+  overallRisk: number;
+  trend: Trend;
+  categories: Record<string, number>;
+}
+
+// States data file structure
+export interface StatesData {
+  states: StateRiskData[];
+}

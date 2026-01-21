@@ -9,9 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@types/d3": "^7.4.3",
+    "@types/topojson-specification": "^1.0.5",
+    "d3": "^7.9.0",
     "next": "14.2.35",
     "react": "^18",
     "react-dom": "^18",
+    "react-simple-maps": "^3.0.0",
     "recharts": "^3.6.0"
   },
   "devDependencies": {
