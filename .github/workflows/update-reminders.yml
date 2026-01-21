@@ -1,0 +1,129 @@
+name: Update Reminders
+
+on:
+  schedule:
+    # Weekly reminder - Every Monday at 9am UTC
+    - cron: '0 9 * * 1'
+    # Monthly reminder - 20th of each month at 9am UTC
+    - cron: '0 9 20 * *'
+  workflow_dispatch:
+    inputs:
+      reminder_type:
+        description: 'Type of reminder to create'
+        required: true
+        default: 'weekly'
+        type: choice
+        options:
+          - weekly
+          - monthly
+
+jobs:
+  create-reminder:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+
+    steps:
+      - name: Determine reminder type
+        id: reminder
+        run: |
+          DAY=$(date +%d)
+          if [ "${{ github.event.inputs.reminder_type }}" = "monthly" ] || [ "$DAY" = "20" ]; then
+            echo "type=monthly" >> $GITHUB_OUTPUT
+            echo "title=Monthly Data Archive - $(date +'%B %Y')" >> $GITHUB_OUTPUT
+          else
+            echo "type=weekly" >> $GITHUB_OUTPUT
+            echo "title=Weekly Data Update - $(date +'%B %d, %Y')" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create weekly reminder issue
+        if: steps.reminder.outputs.type == 'weekly'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const date = new Date().toISOString().split('T')[0];
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '${{ steps.reminder.outputs.title }}',
+              labels: ['update', 'weekly'],
+              body: `## Weekly Data Update Reminder
+
+            **Date:** ${date}
+
+            ### Checklist
+
+            - [ ] Run \`npm run update:weekly\`
+            - [ ] Review and update category findings with new developments
+            - [ ] Add fresh source URLs
+            - [ ] Adjust scores if warranted
+            - [ ] Run \`npm run build\` to verify
+            - [ ] Test locally with \`npm run dev\`
+            - [ ] Commit and push changes
+
+            ### Quick Commands
+
+            \`\`\`bash
+            npm run update:weekly
+            npm run build
+            npm run dev
+            \`\`\`
+
+            ### Categories to Review
+
+            - [ ] Elections
+            - [ ] Rule of Law
+            - [ ] National Security
+            - [ ] Regulatory Stability
+            - [ ] Trade Policy
+            - [ ] Government Contracts
+            - [ ] Fiscal Policy
+            - [ ] Media Freedom
+            - [ ] Civil Discourse
+            - [ ] Institutional Integrity
+            `
+            });
+
+      - name: Create monthly reminder issue
+        if: steps.reminder.outputs.type == 'monthly'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const date = new Date().toISOString().split('T')[0];
+            const month = new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '${{ steps.reminder.outputs.title }}',
+              labels: ['update', 'monthly'],
+              body: `## Monthly Archive Reminder
+
+            **Date:** ${date}
+            **Period:** ${month}
+
+            ### Checklist
+
+            - [ ] Run \`npm run update:monthly\` to archive current data
+            - [ ] Edit \`data/historical-changes.json\` with the generated template
+            - [ ] Update summary and key developments for the month
+            - [ ] Add rationale for any score changes
+            - [ ] Run \`npm run build\` to verify
+            - [ ] Test history page locally with \`npm run dev\`
+            - [ ] Commit and push changes
+
+            ### Quick Commands
+
+            \`\`\`bash
+            npm run update:monthly
+            # Edit data/historical-changes.json with the template
+            npm run build
+            npm run dev
+            \`\`\`
+
+            ### Files Modified
+
+            - \`data/history/${date}.json\` (new snapshot)
+            - \`app/history/page.tsx\` (new import)
+            - \`data/historical-changes.json\` (manual edit required)
+            `
+            });

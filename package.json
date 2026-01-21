@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "update:weekly": "node scripts/weekly-update.js",
+    "update:monthly": "node scripts/monthly-archive.js"
   },
   "dependencies": {
     "@types/d3": "^7.4.3",

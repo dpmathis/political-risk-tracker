@@ -23,6 +23,7 @@ import history202509 from '@/data/history/2025-09-20.json';
 import history202510 from '@/data/history/2025-10-20.json';
 import history202511 from '@/data/history/2025-11-20.json';
 import history202512 from '@/data/history/2025-12-20.json';
+import history202601 from '@/data/history/2026-01-20.json';
 
 const categoryColors: Record<string, string> = {
   elections: '#ef4444',
@@ -64,6 +65,7 @@ export default function HistoryPage() {
     history202510 as HistoricalSnapshot,
     history202511 as HistoricalSnapshot,
     history202512 as HistoricalSnapshot,
+    history202601 as HistoricalSnapshot,
   ];
 
   // Build chart data for all categories
