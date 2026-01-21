@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -21,17 +22,14 @@ export default function RootLayout({
             <div className="flex items-center justify-between h-16">
               <div className="flex items-center gap-8">
                 <Link href="/" className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-gold rounded flex items-center justify-center">
-                    <span className="text-white font-bold text-lg">LN</span>
-                  </div>
-                  <div className="hidden sm:block">
-                    <span className="font-semibold text-white text-lg">
-                      Leadership Now
-                    </span>
-                    <span className="block text-gold text-xs uppercase tracking-wider">
-                      Political Risk Framework
-                    </span>
-                  </div>
+                  <Image
+                    src="/logo-white.png"
+                    alt="Leadership Now Project"
+                    width={180}
+                    height={40}
+                    className="h-10 w-auto"
+                    priority
+                  />
                 </Link>
                 <div className="hidden md:flex items-center gap-1">
                   <Link
@@ -67,13 +65,13 @@ export default function RootLayout({
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div className="flex flex-col md:flex-row items-center justify-between gap-4">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-gold rounded flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">LN</span>
-                </div>
-                <div>
-                  <p className="text-white font-semibold">Leadership Now</p>
-                  <p className="text-gold-light text-xs">Political Risk Framework</p>
-                </div>
+                <Image
+                  src="/logo-white.png"
+                  alt="Leadership Now Project"
+                  width={150}
+                  height={34}
+                  className="h-8 w-auto"
+                />
               </div>
               <div className="text-center md:text-right">
                 <p className="text-cream/80 text-sm">
